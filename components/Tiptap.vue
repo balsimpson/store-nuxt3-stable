@@ -277,6 +277,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Youtube from "@tiptap/extension-youtube";
 import CharacterCount from "@tiptap/extension-character-count";
 import { BubbleMenu, useEditor, EditorContent } from "@tiptap/vue-3";
+import { Mark, markPasteRule, mergeAttributes } from '@tiptap/core'
 
 import { IconFormatH1, IconFormatH2, IconFormatH3, IconFormatBold, IconFormatItalic, IconFormatQuote, IconFormatPaint, IconFormatAlignLeft, IconFormatAlignCenter, IconFormatAlignRight, IconCode, IconImage } from "@iconify-prerendered/vue-material-symbols";
 
@@ -305,6 +306,122 @@ const isUploadingImage = ref(false);
 
 const runtimeConfig = useRuntimeConfig();
 
+const validURL_REGEX = /^(?:https?:\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?(?!localhost)$/i
+// Custom web preview extension
+const WebPreview = Link.extend({
+
+
+  // addPasteRules() {
+  //   return [
+  //     markPasteRule({
+  //       find: pasteRegex,
+  //       type: this.type,
+  //     }),
+  //   ]
+  // },
+  name: 'webpreview',
+  onCreate() {
+    // this.options.protocols.forEach(registerCustomProtocol)
+    console.log("created", this)
+  },
+  
+  addOptions() {
+    return {
+      openOnClick: true,
+      linkOnPaste: true,
+      autolink: true,
+      protocols: [],
+      HTMLAttributes: {
+        target: '_blank',
+        rel: 'noopener noreferrer nofollow',
+        class: 'bg-blue-600',
+      },
+      validate: undefined,
+    }
+  },
+  
+  addAttributes() {
+    return {
+      href: {
+        default: null,
+      },
+      target: {
+        default: this.options.HTMLAttributes.target,
+      },
+      class: {
+        default: this.options.HTMLAttributes.class,
+      },
+    }
+  },
+  
+  parseHTML() {
+    return [
+      { tag: 'a[href]:not([href *= "javascript:" i])' },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    // console.log("renderHTML", this, HTMLAttributes)
+    let url = HTMLAttributes.href;
+    // console.log(url)
+    // let res = fetch(url).then((r) => {
+    //   console.log(r)
+    // })
+    // const embedUrl = getEmbedUrlFromYoutubeUrl({
+    //   url: HTMLAttributes.src,
+    //   allowFullscreen: this.options.allowFullscreen,
+    //   autoplay: this.options.autoplay,
+    //   ccLanguage: this.options.ccLanguage,
+    //   ccLoadPolicy: this.options.ccLoadPolicy,
+    //   controls: this.options.controls,
+    //   disableKBcontrols: this.options.disableKBcontrols,
+    //   enableIFrameApi: this.options.enableIFrameApi,
+    //   endTime: this.options.endTime,
+    //   interfaceLanguage: this.options.interfaceLanguage,
+    //   ivLoadPolicy: this.options.ivLoadPolicy,
+    //   loop: this.options.loop,
+    //   modestBranding: this.options.modestBranding,
+    //   nocookie: this.options.nocookie,
+    //   origin: this.options.origin,
+    //   playlist: this.options.playlist,
+    //   progressBarColor: this.options.progressBarColor,
+    //   startAt: HTMLAttributes.start || 0,
+    // })
+
+    // HTMLAttributes.src = embedUrl
+
+    return [
+      'div',
+      { 'data-youtube-video': '' },
+      [
+        'iframe',
+        mergeAttributes(
+          this.options.HTMLAttributes,
+          HTMLAttributes,
+        ),
+      ],
+    ]
+  },
+  
+  addPasteRules() {
+    if (!this.options.addPasteHandler) {
+      return []
+    }
+
+    console.log("pasted")
+    return [
+      nodePasteRule({
+        find: validURL_REGEX,
+        type: this.type,
+        getAttributes: match => {
+          return { src: match.input }
+        },
+      }),
+    ]
+  },
+  
+})
+
 const vFocus = {
   mounted: (el) => el.focus(),
 };
@@ -327,7 +444,7 @@ const editor = useEditor({
     Link.configure({
       openOnClick: true,
     }),
-
+    // WebPreview,
     TextAlign.configure({
       types: ["heading", "paragraph"],
     }),
@@ -341,7 +458,7 @@ const editor = useEditor({
   editorProps: {
     attributes: {
       class:
-        "prose lg:prose-lg xl:prose-2xl focus:outline-none p-5 overflow-y-scroll dark:bg-stone-800",
+        "prose lg:prose-lg xl:prose-2xl focus:outline-none px-2 py-4 overflow-y-scroll dark:bg-stone-800",
     },
   },
   content: props.content,
