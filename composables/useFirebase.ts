@@ -106,11 +106,11 @@ export const initUser = async () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
-      console.log("user signed in")
+      // console.log("user signed in")
       // router.push("/admin");
       // https://firebase.google.com/docs/reference/js/firebase.User
     } else {
-      console.log("user signed out")
+      // console.log("user signed out")
       // router.push("/admin/signin");
       //if signed out
     }

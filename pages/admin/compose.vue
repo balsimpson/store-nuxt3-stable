@@ -6,7 +6,7 @@
       <Tiptap class="" />
     </div>
     <div class="flex justify-between pt-2 border-t">
-      <button>Cancel</button>
+      <NuxtLink to="/admin">Cancel</NuxtLink>
       <div class="flex space-x-6">
         <button>Save draft</button>
         <button class="px-4 py-1 text-white rounded bg-cyan-600 ">Publish</button>
