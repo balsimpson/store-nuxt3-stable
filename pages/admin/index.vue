@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col h-screen max-w-2xl px-2 mx-auto">
+  <div>
+  <!-- <div class="flex flex-col h-screen max-w-2xl px-2 mx-auto"> -->
+    
     <div class="flex items-center justify-between pt-6 space-x-8">
       <div class="relative w-full">
         <label class="sr-only">Search</label>
@@ -56,10 +58,22 @@ definePageMeta({
   middleware: ["auth"]
 })
 
+const firebaseItems = useFirebaseItems();
+
 // const { data: posts, pending, error } = await useAsyncData(
 //   'post',
 //   () => $fetch('/api/post')
 // )
+
+const { data: posts, pending, error } = await useAsyncData(
+  'post',
+  () => $fetch('/api/post')
+)
+
+watchEffect(() => {
+  // @ts-ignore
+  firebaseItems.value = posts;
+})
 
 // const refresh = () => refreshNuxtData('posts')
 </script>
@@ -72,7 +86,9 @@ definePageMeta({
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scroller {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 </style>
