@@ -4,7 +4,7 @@
       placeholder="Your post title..." autofocus type="text" v-model="postTitle" />
     <!-- <textarea class="w-full h-auto p-2 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none "
       placeholder="Your post title..." autofocus v-model="postTitle"></textarea> -->
-      <TagInput :suggestions="[]" />
+      <TagInput @updated="addTags" :suggestions="[]" />
     <div class="flex-grow mt-2 overflow-y-scroll">
       <Tiptap @update="docUpdated" />
     </div>
@@ -35,9 +35,12 @@ definePageMeta({
 })
 
 const postTitle = ref()
+const postTags = ref([]);
 const editorPost = ref({});
 const publishBtnText = ref("Publish");
 const draftBtnText = ref("Save Draft");
+
+const userCookie = useCookie("userCookie");
 
 const docUpdated = (doc: {}) => {
   editorPost.value = doc;
@@ -57,18 +60,28 @@ const saveDoc = async (status: string) => {
     const slug = createSlug(postTitle.value);
     const data = {
       title: postTitle.value,
+      author: {
+        // @ts-ignore
+        name: userCookie.value.providerData[0].displayName,
+        // @ts-ignore
+        email: userCookie.value.providerData[0].email,
+        // @ts-ignore
+        photo: userCookie.value.providerData[0].photoURL,
+        // @ts-ignore
+        uid: userCookie.value.uid,
+      },
       description,
       image,
       slug,
       status,
       content: editorPost.value,
-      tags: [],
+      tags: postTags.value || [],
       published_at: Date.now(),
     };
 
-    // console.log(data);
-    // let res = await addDocToFirestore("posts", data);
     console.log(data);
+    let res = await addDocToFirestore("posts", data);
+    console.log(res);
 
     // if (res.type == "document") {
     //   toast.success(data.title + " was saved!");
@@ -78,5 +91,10 @@ const saveDoc = async (status: string) => {
     publishBtnText.value = "Publish";
     draftBtnText.value = "Save draft";
   }
+};
+
+const addTags = (tags: never[]) => {
+  postTags.value = tags || [];
+  // console.log("tags", tags);
 };
 </script>

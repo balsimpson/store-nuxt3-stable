@@ -141,11 +141,11 @@ export const signOutUser = async () => {
 * @example addDocToFirestore('products', { title: "test", body: "test" })
 */
 export const addDocToFirestore = async (collectionName: string, doc: any) => {
-  const db = getFirestore();
   try {
-    let docRef = collection(db, collectionName);
-    let res = await addDoc(docRef, doc);
-    return res;
+    const db = getFirestore();
+    const docRef = await addDoc(collection(db, collectionName), doc);
+    console.log("Document written with ID: ", docRef.id);
+    return docRef
   } catch (error) {
     console.log('firebase-error', error);
     return error;
