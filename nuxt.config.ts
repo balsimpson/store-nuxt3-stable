@@ -10,6 +10,9 @@ export default defineNuxtConfig({
   },
   css: ["~/assets/css/styles.css"],
   modules: ['@nuxtjs/tailwindcss'],
+  build: {
+    transpile: ['vue-toastification']
+  },
   runtimeConfig: {
     public: {
       FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
