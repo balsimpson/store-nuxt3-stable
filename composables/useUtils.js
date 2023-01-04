@@ -25,12 +25,12 @@ export const createSlug = (title, id) => {
 export const getPostDetails = (data) => {
 
   if (data && data.content) {
-    let title = data.content.find(element => element.type == "heading");
-    if (title && title.content) {
-      title = title?.content[0]?.text || "";
-    } else {
-      title = "";
-    }
+    // let title = data.content.find(element => element.type == "heading");
+    // if (title && title.content) {
+    //   title = title?.content[0]?.text || "";
+    // } else {
+    //   title = "";
+    // }
 
     let description = data.content.find(element => element.type == "paragraph");
     let txt = "";
@@ -47,7 +47,28 @@ export const getPostDetails = (data) => {
     let image = data.content.find(element => element.type == "image");
     image = image?.attrs?.src || ""
 
-    return { title, description, image }
+    return { description, image }
   }
   // return
+}
+
+export const getRelativeTime = (timestamp) => {
+  const date = new Date(timestamp);
+  const formatter = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+  const diff = Date.now() - date;
+  const seconds = Math.round(diff / 1000);
+  const minutes = Math.round(seconds / 60);
+  const hours = Math.round(minutes / 60);
+  const days = Math.round(hours / 24);
+  if (days > 7) {
+    return date.toLocaleDateString();
+  } else if (days > 1) {
+    return formatter.format(-days, 'day');
+  } else if (hours > 1) {
+    return formatter.format(-hours, 'hour');
+  } else if (minutes > 1) {
+    return formatter.format(-minutes, 'minute');
+  } else {
+    return formatter.format(-seconds, 'second');
+  }
 }
