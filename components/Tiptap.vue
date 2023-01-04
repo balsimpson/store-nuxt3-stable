@@ -304,7 +304,7 @@ const urlLink = ref("");
 
 const isUploadingImage = ref(false);
 
-const runtimeConfig = useRuntimeConfig();
+const config = useRuntimeConfig();
 
 const validURL_REGEX = /^(?:https?:\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?(?!localhost)$/i
 // Custom web preview extension
@@ -482,13 +482,14 @@ const uploadImage = async (event) => {
   let file = event.target.files[0];
   // const data = await readData(file);
 
+  console.log("config", config.public.CLOUDINARY_UPLOAD_PRESET)
   let formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", runtimeConfig.CLOUDINARY_UPLOAD_PRESET);
+  formData.append("upload_preset", config.public.CLOUDINARY_UPLOAD_PRESET);
   formData.append("folder", "pullonath");
 
   const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${runtimeConfig.CLOUDINARY_NAME}/image/upload`,
+    `https://api.cloudinary.com/v1_1/${config.public.CLOUDINARY_NAME}/image/upload`,
     {
       method: "POST",
       body: formData,

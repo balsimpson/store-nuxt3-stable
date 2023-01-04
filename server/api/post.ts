@@ -18,6 +18,9 @@ export default defineEventHandler(async (event) => {
   const app = initializeApp(firebaseConfig);
   
   if (query.slug) {
+
+    // increment page view
+
     // @ts-ignore
     return await getDocFromFirestoreWithSlug("posts", query.slug)
   }
