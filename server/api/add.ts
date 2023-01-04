@@ -4,7 +4,7 @@ import { getDocsFromFirestore, getDocFromFirestore, getDocFromFirestoreWithSlug,
 
 export default defineEventHandler(async (event) => {
   // const config = useRuntimeConfig()
-  // const body = await readBody(event)
+  const body = await readBody(event)
   const query = getQuery(event)
 
   // const config = useRuntimeConfig();
@@ -27,6 +27,6 @@ export default defineEventHandler(async (event) => {
 
   // return await getDocsFromFirestore("posts")
 
-  console.log("event", event.node.req)
+  console.log("event", body, event.node.req)
   return true
 })
