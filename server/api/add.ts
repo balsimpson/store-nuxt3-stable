@@ -28,5 +28,6 @@ export default defineEventHandler(async (event) => {
   // return await getDocsFromFirestore("posts")
 
   console.log("event", body)
+  console.log("event", body.title)
   return true
 })
