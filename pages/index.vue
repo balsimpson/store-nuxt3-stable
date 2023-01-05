@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<PageHead :page="{title: 'some title', description: 'some description'} "/>
 		<!-- Card Blog -->
 		<div class="max-w-[85rem] py-10 lg:py-14 mx-auto">
 

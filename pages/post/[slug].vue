@@ -1,5 +1,6 @@
 <template>
   <div>
+    <PageHead :page="post "/>
     <div class="flex flex-col h-full max-w-3xl p-5 mx-auto sm:px-12">
       <article v-html="postHtml" class="flex-grow prose font-lato">
       </article>
