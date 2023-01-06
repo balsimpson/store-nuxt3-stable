@@ -17,7 +17,7 @@ export default defineEventHandler( async (event) => {
 
         const openai = new OpenAIApi(configuration);
         const query = getQuery(event)
-        const body = await readBody(event)
+        
         
         let mode = query["hub.mode"];
         let token = query["hub.verify_token"];
@@ -34,6 +34,7 @@ export default defineEventHandler( async (event) => {
         return challenge;
     } else {
         try {
+            const body = await readBody(event)
             const ACCESS_TOKEN = config.WHATSAPP_ACCESS_TOKEN;
             // console.log(ACCESS_TOKEN);
             let phone_number_id =
