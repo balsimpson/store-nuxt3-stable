@@ -19,6 +19,8 @@ export default defineNuxtConfig({
       FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
       CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
       CLOUDINARY_UPLOAD_PRESET: process.env.CLOUDINARY_UPLOAD_PRESET,
+      WHATSAPP_ACCESS_TOKEN: process.env.WHATSAPP_ACCESS_TOKEN,
+      OPENAI_KEY: process.env.OPENAI_KEY,
     },
     private: {
       FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,

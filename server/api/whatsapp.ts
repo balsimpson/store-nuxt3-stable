@@ -11,13 +11,13 @@ export default defineEventHandler( async (event) => {
     try {
         const config = useRuntimeConfig()
         const configuration = new Configuration({
-            apiKey: config.OPENAI_KEY,
+            apiKey: config.public.OPENAI_KEY,
         });
-        console.log("event", event.req)
-
+        
         const openai = new OpenAIApi(configuration);
         const query = getQuery(event)
         
+        console.log("event", event.node.req)
         
         let mode = query["hub.mode"];
         let token = query["hub.verify_token"];
@@ -35,7 +35,7 @@ export default defineEventHandler( async (event) => {
     } else {
         try {
             const body = await readBody(event)
-            const ACCESS_TOKEN = config.WHATSAPP_ACCESS_TOKEN;
+            const ACCESS_TOKEN = config.public.WHATSAPP_ACCESS_TOKEN;
             // console.log(ACCESS_TOKEN);
             let phone_number_id =
             body.entry[0].changes[0].value.metadata.phone_number_id || "";
@@ -94,7 +94,8 @@ export default defineEventHandler( async (event) => {
             return {
                 statusCode: 200
             }
-        }} catch (error) {
+        }
+    } catch (error) {
             console.log(error);
             return {
                 statusCode: 200
