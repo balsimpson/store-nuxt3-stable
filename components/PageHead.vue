@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="page">
     <Head>
       <Title>{{ page.title }}</Title>
       <Meta name="description" :content="page.description" />

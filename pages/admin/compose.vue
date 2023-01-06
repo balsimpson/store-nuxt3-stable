@@ -2,10 +2,8 @@
   <div class="flex flex-col h-screen max-w-2xl p-2 mx-auto sm:p-4">
     <input class="w-full h-auto p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none"
       placeholder="Your post title..." autofocus type="text" v-model="postTitle" />
-    <!-- <textarea class="w-full h-auto p-2 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none "
-      placeholder="Your post title..." autofocus v-model="postTitle"></textarea> -->
       <TagInput @updated="addTags" :suggestions="[]" />
-    <div class="flex-grow mt-2 overflow-y-scroll">
+    <div class="flex-grow mt-2 ">
       <Tiptap @update="docUpdated" />
     </div>
     <div class="flex justify-between pt-2 border-t">

@@ -1,7 +1,7 @@
 <template>
   <!-- <editor-content :editor="editor" /> -->
-  <div v-if="editor" class="flex flex-col w-full h-full rounded-none sm:rounded-lg">
-    <div class="sticky top-0 z-20 flex justify-between border-b text-neutral-500 focus:outline-none toolbar ">
+  <div v-if="editor" class="flex flex-col w-full rounded-none sm:rounded-lg">
+    <div class="sticky z-10 flex justify-between bg-black border-b rounded-lg top-2 text-neutral-500 focus:outline-none">
       <div class="flex flex-wrap items-center gap-3 p-2 sm:p-4 text-stone-400 ">
 
         <!-- h1 -->
@@ -178,8 +178,8 @@
       </div> -->
     </div>
 
-    <div class="relative flex-grow w-full h-full overflow-y-scroll">
-      <editor-content :editor="editor" class="h-full" />
+    <editor-content :editor="editor" class="relative flex-grow w-full"/>
+    <div >
       <!-- add youtube link -->
       <div v-if="showAddYTLink" @keydown.esc="showAddYTLink = !showAddYTLink"
         class="absolute top-0 z-10 w-full p-2 pb-4 bg-white border shadow-xl border-stone-300 " tabindex="0">
@@ -278,22 +278,6 @@ import Youtube from "@tiptap/extension-youtube";
 import CharacterCount from "@tiptap/extension-character-count";
 import { BubbleMenu, useEditor, EditorContent } from "@tiptap/vue-3";
 import { Mark, markPasteRule, mergeAttributes } from '@tiptap/core'
-
-import { IconFormatH1, IconFormatH2, IconFormatH3, IconFormatBold, IconFormatItalic, IconFormatQuote, IconFormatPaint, IconFormatAlignLeft, IconFormatAlignCenter, IconFormatAlignRight, IconCode, IconImage } from "@iconify-prerendered/vue-material-symbols";
-
-import {
-  IconHighlight,
-  IconAlignLeft,
-  IconAlignRight,
-  IconAlignMiddle,
-  IconAlignJustify,
-  IconUndo,
-  IconRedo,
-  IconImageAdd,
-  IconCodeBlock,
-  IconLink,
-} from "@iconify-prerendered/vue-bx";
-import { IconYoutube } from "@iconify-prerendered/vue-bxl";
 
 const props = defineProps(["content"]);
 const emit = defineEmits();
@@ -597,14 +581,6 @@ const addLink = (url) => {
     border-bottom: 1px solid #3e3e3e;
   }
 } */
-
-.toolbar {
-  /* border-radius: 8px 8px 0 0; */
-  /* border-left: 1px solid #b6b6b6;
-  border-right: 1px solid #b6b6b6;
-  border-top: 1px solid #b6b6b6; */
-  background: transparent;
-}
 
 iframe {
   width: 100%;

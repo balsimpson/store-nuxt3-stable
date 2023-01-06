@@ -2,6 +2,8 @@
   <div>
     <PageHead :page="post "/>
     <div class="flex flex-col h-full max-w-3xl p-5 mx-auto sm:px-12">
+
+      <div class="text-4xl font-bold font-arvo">{{post.title}}</div>
       <article v-html="postHtml" class="flex-grow prose font-lato">
       </article>
 

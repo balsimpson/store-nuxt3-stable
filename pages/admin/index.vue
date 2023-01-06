@@ -34,7 +34,7 @@
         </div>
 
         <div class="flex items-center justify-between px-4 py-2 border-t">
-          <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p class="mt-2 text-sm text-gray-600">
             {{ getRelativeTime(post.published_at) }}
           </p>
           <NuxtLink :to="`/admin/edit/${post.slug}`" class="opacity-40 hover:opacity-100">

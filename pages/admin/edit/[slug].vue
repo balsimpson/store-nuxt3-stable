@@ -1,27 +1,20 @@
 <template>
-  <div class="flex flex-col h-screen max-w-4xl p-2 mx-auto sm:p-4">
-    <input class="w-full h-auto p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none"
-      placeholder="Your post title..." autofocus type="text" v-model="postTitle" />
-    <!-- <textarea class="w-full h-auto p-2 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none "
-      placeholder="Your post title..." autofocus v-model="postTitle"></textarea> -->
-      <TagInput @updated="addTags" :suggestions="[]" />
-    <div class="flex-grow mt-2 overflow-y-scroll">
-      <Tiptap @update="docUpdated" :content="post.content"/>
+  <div class="flex flex-col max-w-4xl p-2 sm:p-4">
+    <textarea class="w-full p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none"
+      rows="2" v-model="post.title"></textarea>
+    <TagInput @updated="addTags" :suggestions="[]" />
+    <div v-if="post && post.content" class="flex-grow w-full mt-2 overflow-y-scroll">
+      <Tiptap @update="docUpdated" :content="post?.content" />
     </div>
-    <div class="flex justify-between pt-2 border-t">
+    <div class="flex justify-between pt-2 bg-blue-600 border-t">
       <NuxtLink to="/admin">Cancel</NuxtLink>
       <div class="flex space-x-6">
         <button>Save draft</button>
-        <button
-          @click.prevent="saveDoc('published')"
+        <button @click.prevent="saveDoc('published')"
           class="inline-flex px-4 py-1 font-bold tracking-wide text-teal-800 transition bg-teal-500 border-2 border-teal-500 rounded cursor-pointer hover:bg-white hover:text-teal-500 ">
-          <span
-            class="ml-3"
-            :class="[
-              publishBtnText == 'Publishing...' ? 'pointer-events-none' : '',
-            ]"
-            >{{ publishBtnText }}</span
-          >
+          <span class="ml-3" :class="[
+            publishBtnText == 'Publishing...' ? 'pointer-events-none' : '',
+          ]">{{ publishBtnText }}</span>
         </button>
       </div>
     </div>
@@ -42,10 +35,17 @@ const draftBtnText = ref("Save Draft");
 
 const userCookie = useCookie("userCookie");
 
+const myTextarea = ref()
+
 const { data: post, pending, error } = await useAsyncData(
   'post',
   () => $fetch('/api/post?slug=' + route.params.slug)
 )
+
+const updateTextarea = () => {
+  myTextarea.value.style.height = `${myTextarea.value.scrollHeight * 4}px`
+  console.log(myTextarea.value.scrollHeight)
+}
 
 const docUpdated = (doc: {}) => {
   editorPost.value = doc;
@@ -103,3 +103,9 @@ const addTags = (tags: never[]) => {
   // console.log("tags", tags);
 };
 </script>
+
+<style>
+#myTextarea {
+  overflow: hidden;
+}
+</style>
