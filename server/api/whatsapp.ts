@@ -17,7 +17,7 @@ export default defineEventHandler( async (event) => {
         const openai = new OpenAIApi(configuration);
         const query = getQuery(event)
         
-        console.log("event", event.node.req)
+        // console.log("event", event.node.req)
         
         let mode = query["hub.mode"];
         let token = query["hub.verify_token"];
@@ -96,7 +96,7 @@ export default defineEventHandler( async (event) => {
             }
         }
     } catch (error) {
-            console.log(error);
+            console.log("error", error);
             return {
                 statusCode: 200
           }
@@ -107,7 +107,7 @@ export default defineEventHandler( async (event) => {
 
     }
     } catch (error) {
-        console.log(error)
+        console.log("error", error)
     }
     // return { challenge, status: 200 };
 })
