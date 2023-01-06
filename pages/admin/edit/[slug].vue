@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col max-w-4xl p-2 sm:p-4">
-    <textarea class="w-full p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none"
-      rows="2" v-model="post.title"></textarea>
+  <div v-if="post" class="flex flex-col max-w-4xl p-2 sm:p-4">
+    <textarea class="w-full p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none" rows="2"
+      v-model="post.title"></textarea>
     <TagInput @updated="addTags" :suggestions="[]" />
     <div v-if="post && post.content" class="flex-grow w-full mt-2 overflow-y-scroll">
       <Tiptap @update="docUpdated" :content="post?.content" />
@@ -22,12 +22,27 @@
 </template>
 
 <script lang="ts" setup>
+import { useToast } from "vue-toastification";
 definePageMeta({
   middleware: ["auth"]
   // or middleware: 'auth'
 })
 const route = useRoute()
-const postTitle = ref()
+const toast = useToast();
+// interface Post {
+//   title: string;
+//   content: string;
+//   author: string;
+//   tags: string[];
+// }
+
+const { data: post, pending, error } = await useAsyncData(
+  'post',
+  () => $fetch('/api/post?slug=' + route.params.slug)
+)
+// @ts-ignore
+const ogPost = computed(() => post.value);
+// const ogPost = computed(() => JSON.parse(post.value));
 const postTags = ref([]);
 const editorPost = ref({});
 const publishBtnText = ref("Publish");
@@ -35,17 +50,8 @@ const draftBtnText = ref("Save Draft");
 
 const userCookie = useCookie("userCookie");
 
-const myTextarea = ref()
-
-const { data: post, pending, error } = await useAsyncData(
-  'post',
-  () => $fetch('/api/post?slug=' + route.params.slug)
-)
-
-const updateTextarea = () => {
-  myTextarea.value.style.height = `${myTextarea.value.scrollHeight * 4}px`
-  console.log(myTextarea.value.scrollHeight)
-}
+// @ts-ignore
+const postTitle = ref(post.title)
 
 const docUpdated = (doc: {}) => {
   editorPost.value = doc;
@@ -81,20 +87,27 @@ const saveDoc = async (status: string) => {
       status,
       content: editorPost.value,
       tags: postTags.value || [],
-      published_at: Date.now(),
+      // published_at: Date.now(),
+      last_updated: Date.now(),
     };
 
     console.log(data);
-    let res = await addDocToFirestore("posts", data);
+    console.log("id", ogPost.value);
+    // let res = await addDocToFirestore("posts", data);
+    // @ts-ignore
+    let res = await updateDocInFirestore("posts", ogPost.value.id, data);
     console.log(res);
 
-    // if (res.type == "document") {
-    //   toast.success(data.title + " was saved!");
-    // } else {
-    //   toast.error("Post failed to save! - " + res);
-    // }
+    // @ts-ignore
+    if (!res) {
+      toast.success(data.title + " was updated!");
+    } else {
+      toast.error("Post failed to save! - " + res);
+    }
     publishBtnText.value = "Publish";
     draftBtnText.value = "Save draft";
+  } else {
+    console.log("else")
   }
 };
 
@@ -102,6 +115,16 @@ const addTags = (tags: never[]) => {
   postTags.value = tags || [];
   // console.log("tags", tags);
 };
+
+onMounted(() => {
+  // console.log(route.params, ogPost.value);
+  // @ts-ignore
+  editorPost.value = post.value.content;
+  // @ts-ignore
+  postTitle.value = post.value.title;
+  // @ts-ignore
+  postTags.value = post.value.tags || [];
+});
 </script>
 
 <style>

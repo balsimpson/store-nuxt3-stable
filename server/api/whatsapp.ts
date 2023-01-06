@@ -22,7 +22,7 @@ export default defineEventHandler( async (event) => {
             try {
                 const body = await readBody(event)
                 const ACCESS_TOKEN = config.public.WHATSAPP_ACCESS_TOKEN;
-                console.log("body", JSON.stringify(body, null, 2))
+                // console.log("body", JSON.stringify(body, null, 2))
 
 
                 let phone_number_id =
