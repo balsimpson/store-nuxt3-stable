@@ -32,7 +32,7 @@ export default defineEventHandler( async (event) => {
 
                 if (body.entry[0].changes[0].value && body.entry[0].changes[0].value.messages[0]) {
                         from = body.entry[0].changes[0].value.messages[0].from || ""; // extract the phone number from the webhook payload
-                        msg_body = body.entry[0].changes[0].value.messages[0].text.body || "";
+                        msg_body = body.entry[0].changes[0].value?.messages[0]?.text?.body || "";
                 }
 
 
