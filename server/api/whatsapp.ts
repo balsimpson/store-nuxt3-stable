@@ -8,18 +8,20 @@
 import { Configuration, OpenAIApi } from "openai"
 
 export default defineEventHandler( async (event) => {
-    console.log(event)
-    const config = useRuntimeConfig()
-    const configuration = new Configuration({
-        apiKey: config.OPENAI_KEY,
-      });
-    const openai = new OpenAIApi(configuration);
-    const query = getQuery(event)
-    const body = await readBody(event)
+    try {
+        const config = useRuntimeConfig()
+        const configuration = new Configuration({
+            apiKey: config.OPENAI_KEY,
+        });
+        console.log("event", event.req)
 
-    let mode = query["hub.mode"];
-    let token = query["hub.verify_token"];
-    let challenge = query["hub.challenge"];
+        const openai = new OpenAIApi(configuration);
+        const query = getQuery(event)
+        const body = await readBody(event)
+        
+        let mode = query["hub.mode"];
+        let token = query["hub.verify_token"];
+        let challenge = query["hub.challenge"];
 
     let generatedImg = "";
     
@@ -101,6 +103,9 @@ export default defineEventHandler( async (event) => {
         // if (status !== "sent" || status !== "delivered" || status !== "read") {
         // }
 
+    }
+    } catch (error) {
+        console.log(error)
     }
     // return { challenge, status: 200 };
 })
