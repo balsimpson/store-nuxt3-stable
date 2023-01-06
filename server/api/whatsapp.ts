@@ -17,7 +17,6 @@ export default defineEventHandler( async (event) => {
         const configuration = new Configuration({
             apiKey: config.public.OPENAI_KEY,
         });
-        console.log("apiKey", config.public.OPENAI_KEY, config.OPENAI_KEY);
         
         const openai = new OpenAIApi(configuration);
         const query = getQuery(event)
@@ -28,91 +27,91 @@ export default defineEventHandler( async (event) => {
         let token = query["hub.verify_token"];
         let challenge = query["hub.challenge"];
 
-    let generatedImg = "";
-    
-    // console.log('body', JSON.stringify(body.entry[0].changes[0], null, 2));
-    // console.log(query);
-    
-    
-    if (mode && token) {
-        console.log(token, challenge);
-        return challenge;
-    } else {
-        try {
-            const body = await readBody(event)
-            const ACCESS_TOKEN = config.public.WHATSAPP_ACCESS_TOKEN;
-            // console.log(ACCESS_TOKEN);
-            let phone_number_id =
-            body.entry[0].changes[0].value.metadata.phone_number_id || "";
-            let from = ""
-            let msg_body = "";
-
-            if (body.entry[0].changes[0].value && body.entry[0].changes[0].value.messages[0]) {
-                    from = body.entry[0].changes[0].value.messages[0].from || ""; // extract the phone number from the webhook payload
-            }
-
-            msg_body = body.entry[0].changes[0].value.messages[0].text.body || "";
-
-        if (from && msg_body) {
-
-            console.log("body", msg_body)
-            // let model = "text-embedding-ada-002"
-            let model = "text-davinci-003"
-            // if (msg_body.indexOf('/b') === 0) {
-            //     model = "text-babbage-001";
-            //     msg_body = msg_body.substring(3, msg_body.length-1)
-
-            //     // console.log("msg_body", msg_body)
-            //   } 
-            // if (msg_body.indexOf('/c') === 0) {
-            //     model = "text-curie-001";
-            //     msg_body = msg_body.substring(3, msg_body.length-1)
-
-            //     // console.log("msg_body", msg_body)
-            //   } 
-            // get image from dall-e
-            // const response = await openai.createImage({
-            //     prompt: msg_body,
-            //     n: 1,
-            //     size: "256x256",
-            //   });
-
-            // get reply from GPT-3
-            const prediction = await openai.createCompletion({
-                model: model,
-                prompt: msg_body,
-                max_tokens: 256,
-                temperature: 0.7,
-            });
-
-            // console.log(JSON.stringify(prediction.data, null, 2))
-
-            // generatedImg = response.data.data[0].url;
-
-            await sendMessage(prediction.data.choices[0].text, from, ACCESS_TOKEN, phone_number_id)
-
-            return {
-                statusCode: 200
-            }
+        let generatedImg = "";
+        
+        // console.log('body', JSON.stringify(body.entry[0].changes[0], null, 2));
+        // console.log(query);
+        
+        
+        if (mode && token) {
+            console.log(token, challenge);
+            return challenge;
         } else {
+            try {
+                const body = await readBody(event)
+                const ACCESS_TOKEN = config.public.WHATSAPP_ACCESS_TOKEN;
+                console.log("body", body);
+                let phone_number_id =
+                body.entry[0].changes[0].value.metadata.phone_number_id || "";
+                let from = ""
+                let msg_body = "";
 
-            return {
-                statusCode: 200
+                if (body.entry[0].changes[0].value && body.entry[0].changes[0].value.messages[0]) {
+                        from = body.entry[0].changes[0].value.messages[0].from || ""; // extract the phone number from the webhook payload
+                }
+
+                msg_body = body.entry[0].changes[0].value.messages[0].text.body || "";
+
+            if (from && msg_body) {
+
+                console.log("body", msg_body)
+                // let model = "text-embedding-ada-002"
+                let model = "text-davinci-003"
+                // if (msg_body.indexOf('/b') === 0) {
+                //     model = "text-babbage-001";
+                //     msg_body = msg_body.substring(3, msg_body.length-1)
+
+                //     // console.log("msg_body", msg_body)
+                //   } 
+                // if (msg_body.indexOf('/c') === 0) {
+                //     model = "text-curie-001";
+                //     msg_body = msg_body.substring(3, msg_body.length-1)
+
+                //     // console.log("msg_body", msg_body)
+                //   } 
+                // get image from dall-e
+                // const response = await openai.createImage({
+                //     prompt: msg_body,
+                //     n: 1,
+                //     size: "256x256",
+                //   });
+
+                // get reply from GPT-3
+                const prediction = await openai.createCompletion({
+                    model: model,
+                    prompt: msg_body,
+                    max_tokens: 256,
+                    temperature: 0.7,
+                });
+
+                // console.log(JSON.stringify(prediction.data, null, 2))
+
+                // generatedImg = response.data.data[0].url;
+
+                await sendMessage(prediction.data.choices[0].text, from, ACCESS_TOKEN, phone_number_id)
+
+                return {
+                    statusCode: 200
+                }
+            } else {
+
+                return {
+                    statusCode: 200
+                }
             }
-        }
-    } catch (error) {
-            console.log("error", error);
-            return {
-                statusCode: 200
-          }
+        } catch (error) {
+                console.log("error", error);
+                return {
+                    statusCode: 200
+            }
         }
 
         // if (status !== "sent" || status !== "delivered" || status !== "read") {
         // }
 
-    }
+        }
     } catch (error) {
-        console.log("error", error)
+        console.log("main error", error)
     }
     // return { challenge, status: 200 };
 })
