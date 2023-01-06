@@ -1,7 +1,18 @@
+// import type { IncomingMessage, ServerResponse } from "http";
+// import { useBody } from 'h3'
+
+// export default (req, res) => {
+//     res.statusCode(200)
+//     res.end('Legacy handler')
+//   }
 import { Configuration, OpenAIApi } from "openai"
 
 export default defineEventHandler( async (event) => {
+    // const config = useRuntimeConfig()
+    // console.log("config", config);
+    // console.log("apiKey", config.public.OPENAI_KEY, config.OPENAI_KEY);
     try {
+
         const config = useRuntimeConfig()
         const configuration = new Configuration({
             apiKey: config.public.OPENAI_KEY,
@@ -10,21 +21,26 @@ export default defineEventHandler( async (event) => {
         const openai = new OpenAIApi(configuration);
         const query = getQuery(event)
         
+        // console.log("event", event.node.req)
+        
         let mode = query["hub.mode"];
         let token = query["hub.verify_token"];
         let challenge = query["hub.challenge"];
 
         let generatedImg = "";
         
+        // console.log('body', JSON.stringify(body.entry[0].changes[0], null, 2));
+        // console.log(query);
+        
+        
         if (mode && token) {
+            console.log(token, challenge);
             return challenge;
         } else {
             try {
                 const body = await readBody(event)
                 const ACCESS_TOKEN = config.public.WHATSAPP_ACCESS_TOKEN;
                 console.log("body", JSON.stringify(body, null, 2))
-
-
                 let phone_number_id =
                 body.entry[0].changes[0].value.metadata.phone_number_id || "";
                 let from = ""
@@ -32,9 +48,9 @@ export default defineEventHandler( async (event) => {
 
                 if (body.entry[0].changes[0].value && body.entry[0].changes[0].value.messages[0]) {
                         from = body.entry[0].changes[0].value.messages[0].from || ""; // extract the phone number from the webhook payload
-                        msg_body = body.entry[0].changes[0].value.messages[0].text.body || "";
                 }
 
+                msg_body = body.entry[0].changes[0].value.messages[0].text.body || "";
 
                 if (from && msg_body) {
 
