@@ -40,7 +40,7 @@ export default defineEventHandler( async (event) => {
             try {
                 const body = await readBody(event)
                 const ACCESS_TOKEN = config.public.WHATSAPP_ACCESS_TOKEN;
-                console.log(JSON.stringify(body, null, 2))
+                console.log("body", JSON.stringify(body, null, 2))
                 let phone_number_id =
                 body.entry[0].changes[0].value.metadata.phone_number_id || "";
                 let from = ""
@@ -84,7 +84,7 @@ export default defineEventHandler( async (event) => {
                         temperature: 0.7,
                     });
 
-                    console.log(JSON.stringify(prediction.data, null, 2))
+                    console.log("prediction", JSON.stringify(prediction.data, null, 2))
 
                     // generatedImg = response.data.data[0].url;
 
@@ -95,10 +95,10 @@ export default defineEventHandler( async (event) => {
                     }
                 } else {
 
-                return {
-                    statusCode: 200
+                    return {
+                        statusCode: 200
+                    }
                 }
-            }
         } catch (error) {
                 console.log("error", error);
                 return {
