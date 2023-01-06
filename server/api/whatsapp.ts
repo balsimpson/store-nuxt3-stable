@@ -9,10 +9,12 @@ import { Configuration, OpenAIApi } from "openai"
 
 export default defineEventHandler( async (event) => {
     try {
+
         const config = useRuntimeConfig()
         const configuration = new Configuration({
             apiKey: config.public.OPENAI_KEY,
         });
+        console.log("apiKey", config.public.OPENAI_KEY, config.OPENAI_KEY);
         
         const openai = new OpenAIApi(configuration);
         const query = getQuery(event)
@@ -28,7 +30,7 @@ export default defineEventHandler( async (event) => {
     // console.log('body', JSON.stringify(body.entry[0].changes[0], null, 2));
     // console.log(query);
     
-    console.log("node", token, challenge);
+    
     if (mode && token) {
         console.log(token, challenge);
         return challenge;
