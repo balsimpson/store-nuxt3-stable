@@ -1,21 +1,25 @@
 <template>
-  <div v-if="post" class="flex flex-col max-w-4xl p-2 sm:p-4">
-    <textarea class="w-full p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none" rows="2"
-      v-model="post.title"></textarea>
+  <div v-if="post" class="flex flex-col h-screen max-w-2xl p-2 sm:p-4">
+    <!-- <textarea class="w-full p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none"
+      v-model="postTitle"></textarea> -->
+    <input class="w-full h-auto p-2 py-4 text-2xl font-bold bg-transparent sm:px-4 sm:text-4xl focus:outline-none"
+      placeholder="Your post title..." autofocus type="text" v-model="postTitle" />
     <TagInput @updated="addTags" :suggestions="[]" />
-    <div v-if="post && post.content" class="flex-grow w-full mt-2 overflow-y-scroll">
+    <div v-if="post && post.content" class="flex-grow w-full pb-24 mt-2">
       <Tiptap @update="docUpdated" :content="post?.content" />
     </div>
-    <div class="flex justify-between pt-2 bg-blue-600 border-t">
-      <NuxtLink to="/admin">Cancel</NuxtLink>
-      <div class="flex space-x-6">
-        <button>Save draft</button>
-        <button @click.prevent="saveDoc('published')"
-          class="inline-flex px-4 py-1 font-bold tracking-wide text-teal-800 transition bg-teal-500 border-2 border-teal-500 rounded cursor-pointer hover:bg-white hover:text-teal-500 ">
-          <span class="ml-3" :class="[
-            publishBtnText == 'Publishing...' ? 'pointer-events-none' : '',
-          ]">{{ publishBtnText }}</span>
-        </button>
+    <div class="fixed left-0 w-full p-4 bottom-2">
+      <div class="flex items-center justify-between max-w-2xl p-4 mx-auto bg-white border rounded-lg shadow-lg">
+        <NuxtLink to="/admin" class="px-4 py-1 border rounded">Cancel</NuxtLink>
+        <div class="flex space-x-6">
+          <button>Save draft</button>
+          <button @click.prevent="saveDoc('published')"
+            class="inline-flex px-4 py-1 font-bold tracking-wide text-teal-800 transition bg-teal-500 border-2 border-teal-500 rounded cursor-pointer hover:bg-white hover:text-teal-500 ">
+            <span class="ml-3" :class="[
+              publishBtnText == 'Publishing...' ? 'pointer-events-none' : '',
+            ]">{{ publishBtnText }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

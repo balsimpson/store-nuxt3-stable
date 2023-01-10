@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen max-w-4xl px-2 mx-auto">
+  <div class="flex flex-col h-screen max-w-4xl px-4 mx-auto">
     <nav class="py-6">
       <NuxtLink to="/" class="flex items-center">
         <img src="/favicon.png" alt="" class="w-10">
