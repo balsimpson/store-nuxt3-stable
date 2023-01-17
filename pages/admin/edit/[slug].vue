@@ -28,7 +28,8 @@
 <script lang="ts" setup>
 import { useToast } from "vue-toastification";
 definePageMeta({
-  middleware: ["auth"]
+  middleware: ["auth"],
+  layout: "admin"
   // or middleware: 'auth'
 })
 const route = useRoute()
