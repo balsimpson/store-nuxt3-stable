@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<PageHead :page="post" />
-		<AppImageCard :item="posts[0]" />
+		<AppImageCard :item="posts[0]" class="py-4"/>
 		<!-- Grid -->
 		<div v-if="posts" class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
 			<!-- Card -->

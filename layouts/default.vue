@@ -7,5 +7,6 @@
       </NuxtLink>
     </nav>
     <slot class="flex-grow"/>
+    <AppFooter />
   </div>
 </template>

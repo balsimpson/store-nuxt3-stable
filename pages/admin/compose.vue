@@ -6,9 +6,9 @@
     <div class="flex-grow mt-2 ">
       <Tiptap @update="docUpdated" />
     </div>
-    <div class="flex justify-between pt-2 border-t">
+    <div class="flex items-center justify-between pt-2 border-t">
       <NuxtLink to="/admin">Cancel</NuxtLink>
-      <div class="flex space-x-6">
+      <div class="flex items-center space-x-6">
         <button>Save draft</button>
         <button
           @click.prevent="saveDoc('published')"
@@ -28,7 +28,8 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  middleware: ["auth"]
+  middleware: ["auth"],
+  layout: 'admin'
   // or middleware: 'auth'
 })
 

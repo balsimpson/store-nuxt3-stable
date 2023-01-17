@@ -1,11 +1,12 @@
 <template>
   <!-- <editor-content :editor="editor" /> -->
-  <div v-if="editor" class="flex flex-col w-full rounded-none sm:rounded-lg">
-    <div class="sticky z-10 flex justify-between bg-black border-b rounded-lg top-2 text-neutral-500 focus:outline-none">
+  <div v-if="editor" class="flex flex-col w-full h-full rounded-none sm:rounded-lg">
+    <div
+      class="sticky z-10 flex justify-between bg-black border-b rounded-lg top-2 text-neutral-500 focus:outline-none">
       <div class="flex flex-wrap items-center gap-3 p-2 sm:p-4 text-stone-400 ">
 
         <!-- h1 -->
-        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 1 }).run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 1 }).run()" class="hover:text-teal-600"
           :class="[editor.isActive('heading', { level: 1 }) ? 'is-active text-teal-600' : '']">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
@@ -14,7 +15,7 @@
         </button>
 
         <!-- h2 -->
-        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 2 }).run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 2 }).run()" class="hover:text-teal-600"
           :class="[editor.isActive('heading', { level: 2 }) ? 'is-active text-teal-600' : '']">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
@@ -24,7 +25,7 @@
         </button>
 
         <!-- h3 -->
-        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 3 }).run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 3 }).run()" class="hover:text-teal-600"
           :class="[editor.isActive('heading', { level: 3 }) ? 'is-active text-teal-600' : '']">
 
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6">
@@ -35,7 +36,7 @@
         </button>
 
         <!-- bold -->
-        <button @click.prevent="editor.chain().focus().toggleBold().run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleBold().run()" class="hover:text-teal-600"
           :class="[editor.isActive('bold') ? 'is-active text-teal-600' : '']">
           <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -45,7 +46,7 @@
         </button>
 
         <!-- italic -->
-        <button @click.prevent="editor.chain().focus().toggleItalic().run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleItalic().run()" class="hover:text-teal-600"
           :class="[editor.isActive('italic') ? 'is-active text-teal-600' : '']">
           <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 20H7v-2h2.927l2.116-12H9V4h8v2h-2.927l-2.116 12H15v2Z" fill="currentColor" />
@@ -53,7 +54,7 @@
         </button>
 
         <!-- quote -->
-        <button @click.prevent="editor.chain().focus().toggleBlockquote().run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleBlockquote().run()" class="hover:text-teal-600"
           :class="[editor.isActive('blockquote') ? 'is-active text-teal-600' : '']">
           <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -63,7 +64,7 @@
         </button>
 
         <!-- code -->
-        <button @click.prevent="editor.chain().focus().toggleCode().run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleCode().run()" class="hover:text-teal-600"
           :class="[editor.isActive('code') ? 'is-active text-teal-600' : '']">
           <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -73,7 +74,7 @@
         </button>
 
         <!-- codeblock -->
-        <button @click.prevent="editor.chain().focus().toggleCodeBlock().run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleCodeBlock().run()" class="hover:text-teal-600"
           :class="[editor.isActive('codeBlock') ? 'is-active text-teal-600' : '']">
           <svg class="crayons-icon" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -83,7 +84,7 @@
         </button>
 
         <!-- link -->
-        <button @click.prevent="addLink" class="cursor-pointer hover:text-teal-500"
+        <button @click.prevent="linkHandler('link')" class="cursor-pointer hover:text-teal-500"
           :class="[editor.isActive('link') ? 'is-active text-teal-500' : '']">
           <svg class="crayons-icon" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -106,7 +107,7 @@
         </label>
 
         <!-- align left -->
-        <button @click.prevent="editor.chain().focus().setTextAlign('left').run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().setTextAlign('left').run()" class="hover:text-teal-600"
           :class="[editor.isActive({ textAlign: 'left' }) ? 'is-active text-teal-600' : '']">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
             <path fill="currentColor"
@@ -115,7 +116,7 @@
         </button>
 
         <!-- align center -->
-        <button @click.prevent="editor.chain().focus().setTextAlign('center').run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().setTextAlign('center').run()" class="hover:text-teal-600"
           :class="[editor.isActive({ textAlign: 'center' }) ? 'is-active text-teal-600' : '']">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
             <path fill="currentColor"
@@ -124,7 +125,7 @@
         </button>
 
         <!-- align right -->
-        <button @click.prevent="editor.chain().focus().setTextAlign('right').run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().setTextAlign('right').run()" class="hover:text-teal-600"
           :class="[editor.isActive({ textAlign: 'right' }) ? 'is-active text-teal-600' : '']">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
             <path fill="currentColor" d="M3 21h18v-2H3v2zm6-4h12v-2H9v2zm-6-4h18v-2H3v2zm6-4h12V7H9v2zM3 3v2h18V3H3z" />
@@ -132,7 +133,7 @@
         </button>
 
         <!-- youtube -->
-        <button @click.prevent="showAddYTLink = !showAddYTLink" class="relative hover:text-cyan-600"
+        <button @click.prevent="linkHandler('youtube')" class="relative hover:text-teal-600"
           :class="[showAddYTLink ? 'is-active text-teal-600' : '']">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-6 h-6">
             <path fill="currentColor"
@@ -161,7 +162,7 @@
         </button>
 
         <!-- <IconFormatPaint @click="editor.chain().focus().toggleHighlight().run()"
-          class="w-8 cursor-pointer hover:text-cyan-600" :class="[editor.isActive('highlight') ? 'is-active text-teal-600' : '' ]" /> -->
+          class="w-8 cursor-pointer hover:text-teal-600" :class="[editor.isActive('highlight') ? 'is-active text-teal-600' : '' ]" /> -->
 
       </div>
 
@@ -178,46 +179,48 @@
       </div> -->
     </div>
 
-    <editor-content :editor="editor" class="relative flex-grow w-full"/>
-    <div >
+    <div class="relative">
       <!-- add youtube link -->
       <div v-if="showAddYTLink" @keydown.esc="showAddYTLink = !showAddYTLink"
-        class="absolute top-0 z-10 w-full p-2 pb-4 bg-white border shadow-xl border-stone-300 " tabindex="0">
-        <div class="relative px-2">
-          <label class="text-sm text-stone-500">Paste a YouTube Link
-
-            <input v-model="ytLink" v-focus type="url" class="form-input "
-              placeholder="https://www.youtube.com/watch?v=aRx4-fsJ5uE" />
-            <button @click="addVideo"
-              class="absolute px-3 py-1 text-sm font-semibold uppercase bg-white rounded top-1/2 right-5 text-stone-600">
-              add
-            </button>
-          </label>
+        class="absolute z-10 w-full p-2 bg-white top-2 border-stone-300" tabindex="0">
+        <div class="flex items-center h-full space-x-2 ">
+          <input v-model="ytLink" v-focus type="url"
+            class="w-full px-2 py-1 border rounded focus:outline-none focus:border-teal-500"
+            placeholder="Enter a YouTube video URL" />
+          <button @click="addVideo"
+            class="w-20 h-8 text-sm font-semibold text-white uppercase bg-teal-600 rounded"
+            :class="[ytLink ? 'opacity-100': 'opacity-50 pointer-events-none']"
+            >
+            add
+          </button>
         </div>
       </div>
+      
       <!-- add link -->
       <div v-if="showAddLink" @keydown.esc="showAddLink = !showAddLink"
-        class="absolute top-0 z-10 w-full p-2 pb-4 bg-white border shadow-xl border-stone-700 " tabindex="0">
-        <div class="relative px-2">
-          <label class="text-sm text-stone-500">Paste a URL
-
-            <input v-model="urlLink" v-focus type="url" class="form-input" placeholder="https://www.example.com/" />
-            <button @click="addLink"
-              class="absolute px-3 py-1 text-sm font-semibold uppercase bg-white rounded top-1/2 right-5 "
-              :class="{ 'is-active': editor.isActive('link') }">
-              add
-            </button>
-          </label>
+        class="absolute z-10 w-full p-2 bg-white top-2 border-stone-300" tabindex="0">
+        <div class="flex items-center h-full space-x-2 ">
+          <input v-model="urlLink" v-focus type="url"
+            class="w-full px-2 py-1 border rounded focus:outline-none focus:border-teal-500"
+            placeholder="Enter a URL" />
+          <button @click="addLink"
+            class="w-20 h-8 text-sm font-semibold text-white uppercase bg-teal-600 rounded"
+            :class="[urlLink ? 'opacity-100': 'opacity-50 pointer-events-none']"
+            >
+            add
+          </button>
         </div>
       </div>
+
     </div>
+    <editor-content :editor="editor" class="relative flex-grow w-full" />
 
     <div class="relative">
       <bubble-menu
         class="flex items-center px-2 py-1 space-x-2 bg-black border rounded shadow border-stone-300 dark:border-stone-700 text-stone-400"
         :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
         <!-- h2 -->
-        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 2 }).run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleHeading({ level: 2 }).run()" class="hover:text-teal-600"
           :class="[editor.isActive('heading', { level: 2 }) ? 'is-active text-teal-600' : '']">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
@@ -225,7 +228,7 @@
           </svg>
         </button>
         <!-- bold -->
-        <button @click.prevent="editor.chain().focus().toggleBold().run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleBold().run()" class="hover:text-teal-600"
           :class="[editor.isActive('bold') ? 'is-active text-teal-600' : '']">
           <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -234,7 +237,7 @@
           </svg>
         </button>
         <!-- code -->
-        <button @click.prevent="editor.chain().focus().toggleCode().run()" class="hover:text-cyan-600"
+        <button @click.prevent="editor.chain().focus().toggleCode().run()" class="hover:text-teal-600"
           :class="[editor.isActive('code') ? 'is-active text-teal-600' : '']">
           <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -246,7 +249,10 @@
         <button @click.prevent="editor.chain().focus().toggleHighlight().run()"
           class="cursor-pointer hover:text-teal-500"
           :class="[editor.isActive('highlight') ? 'is-active text-teal-500' : '']">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" ><path fill="currentColor" d="M20.259 2.004a.75.75 0 0 1 .742.649l.007.102l-.004 4.497a2.254 2.254 0 0 1-2.001 2.234v2.26a2.25 2.25 0 0 1-2.096 2.245l-.154.005H16.5v2.792a2.25 2.25 0 0 1-1.14 1.958l-.155.08l-6.635 3.106a.75.75 0 0 1-1.061-.579l-.007-.1v-7.257H7.25A2.25 2.25 0 0 1 5.005 11.9L5 11.746v-2.26a2.25 2.25 0 0 1-1.994-2.072L3 7.25V2.754a.75.75 0 0 1 1.493-.102l.007.102V7.25c0 .38.282.694.648.744L5.25 8h13.501c.38 0 .695-.283.746-.649l.007-.101l.004-4.497a.75.75 0 0 1 .75-.75ZM15 13.996H9.003v6.077l5.567-2.606a.75.75 0 0 0 .424-.572l.008-.107L15 13.996ZM17.502 9.5H6.5v2.246c0 .38.282.694.648.743l.102.007h9.503a.75.75 0 0 0 .743-.648l.007-.102l-.001-2.246Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M20.259 2.004a.75.75 0 0 1 .742.649l.007.102l-.004 4.497a2.254 2.254 0 0 1-2.001 2.234v2.26a2.25 2.25 0 0 1-2.096 2.245l-.154.005H16.5v2.792a2.25 2.25 0 0 1-1.14 1.958l-.155.08l-6.635 3.106a.75.75 0 0 1-1.061-.579l-.007-.1v-7.257H7.25A2.25 2.25 0 0 1 5.005 11.9L5 11.746v-2.26a2.25 2.25 0 0 1-1.994-2.072L3 7.25V2.754a.75.75 0 0 1 1.493-.102l.007.102V7.25c0 .38.282.694.648.744L5.25 8h13.501c.38 0 .695-.283.746-.649l.007-.101l.004-4.497a.75.75 0 0 1 .75-.75ZM15 13.996H9.003v6.077l5.567-2.606a.75.75 0 0 0 .424-.572l.008-.107L15 13.996ZM17.502 9.5H6.5v2.246c0 .38.282.694.648.743l.102.007h9.503a.75.75 0 0 0 .743-.648l.007-.102l-.001-2.246Z" />
+          </svg>
         </button>
 
         <!-- link -->
@@ -308,7 +314,7 @@ const WebPreview = Link.extend({
     // this.options.protocols.forEach(registerCustomProtocol)
     console.log("created", this)
   },
-  
+
   addOptions() {
     return {
       openOnClick: true,
@@ -323,7 +329,7 @@ const WebPreview = Link.extend({
       validate: undefined,
     }
   },
-  
+
   addAttributes() {
     return {
       href: {
@@ -337,7 +343,7 @@ const WebPreview = Link.extend({
       },
     }
   },
-  
+
   parseHTML() {
     return [
       { tag: 'a[href]:not([href *= "javascript:" i])' },
@@ -386,7 +392,7 @@ const WebPreview = Link.extend({
       ],
     ]
   },
-  
+
   addPasteRules() {
     if (!this.options.addPasteHandler) {
       return []
@@ -403,7 +409,7 @@ const WebPreview = Link.extend({
       }),
     ]
   },
-  
+
 })
 
 const vFocus = {
@@ -524,6 +530,16 @@ const addLink = (url) => {
     showAddLink.value = false;
   }
 };
+
+const linkHandler = (type) => {
+  if (type == 'youtube') {
+    showAddLink.value = false
+    showAddYTLink.value = !showAddYTLink.value
+  } else {
+    showAddYTLink.value = false
+    showAddLink.value = !showAddLink.value
+  }
+}
 
 // onBeforeUnmount(() => {
 //   editor.value.destroy();

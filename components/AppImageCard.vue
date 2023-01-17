@@ -1,6 +1,6 @@
 <template>
   <a class="relative block group" :href="'/post/'+item.slug">
-    <pre>{{ item.slug }}</pre>
+    <!-- <pre>{{ item.slug }}</pre> -->
 					<div
 						class="flex-shrink-0 relative w-full rounded-xl overflow-hidden h-[350px] before:absolute before:inset-x-0 before:w-full before:h-full before:bg-gradient-to-t before:from-gray-900/[.7] before:z-[1]">
 						<img class="absolute top-0 left-0 object-cover w-full h-full"
