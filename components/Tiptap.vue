@@ -715,19 +715,19 @@ hr {
   box-decoration-break: clone;
   border-radius: 0.2rem;
   border: 1px solid #dedede;
-  color: crimson;
+  color: rgb(100, 100, 100);
   background-color: #e7e7e7;
   padding-left: 4px;
   padding-right: 4px;
 }
-
+/* 
 @media (prefers-color-scheme: dark) {
   .prose code {
     border: 1px solid #575757;
     color: #e19428;
     background-color: #575757;
   }
-}
+} */
 
 .prose pre code {
   color: rgb(255, 255, 255);

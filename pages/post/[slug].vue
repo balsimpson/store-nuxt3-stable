@@ -2,7 +2,7 @@
   <div class="py-6">
     <PageHead :page="post" />
     
-    <div class="flex flex-col h-full max-w-4xl">
+    <div v-if="post" class="flex flex-col h-full max-w-2xl mx-auto">
       
       <div class="text-4xl font-bold font-arvo">{{ post.title }}</div>
       <div class="flex py-6 text-xs font-bold text-gray-600">
