@@ -2,12 +2,14 @@
   <div class="flex flex-col h-full">
     <!-- <div class="flex flex-col h-screen max-w-2xl px-2 mx-auto"> -->
 
-    <div class="flex items-center justify-between py-6 space-x-8">
+    <div class="flex flex-col items-center py-6 space-y-2 sm:space-y-0 sm:space-x-8 sm:justify-between sm:flex-row">
       <div class="relative w-full">
         <label class="sr-only">Search</label>
-        <input type="text"
+        <input
+          @keyup="searchPosts" 
+          type="text"
           class="w-full p-3 pl-10 text-sm border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500"
-          placeholder="Search for items">
+          placeholder="Search for items" v-model="searchTerm">
         <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
           <svg class="h-3.5 w-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
             fill="currentColor" viewBox="0 0 16 16">
@@ -16,12 +18,12 @@
           </svg>
         </div>
       </div>
-      <NuxtLink to="/admin/compose" class="px-12 py-3 text-white bg-indigo-600 rounded-lg shrink-0 ">Add Post</NuxtLink>
+      <NuxtLink to="/admin/compose" class="w-full px-12 py-3 text-center text-white bg-indigo-600 rounded-lg sm:w-auto shrink-0">Add Post</NuxtLink>
     </div>
 
-    <div v-if="posts && posts.length" class="h-full my-3 space-y-3 overflow-y-scroll scroller snap-mandatory snap-y">
+    <div v-if="posts && searchItems.length" class="h-full my-3 space-y-3 overflow-y-scroll scroller snap-mandatory snap-y">
 
-      <div v-for="post in posts" class="border rounded snap-start">
+      <div v-for="post in searchItems" class="border rounded snap-start">
 
         <div class="p-4">
           <h3 class="text-base font-semibold text-gray-800 sm:text-lg">
@@ -34,11 +36,13 @@
         </div>
 
         <div class="flex items-center justify-between px-4 py-2 border-t">
-          <p class="mt-2 text-sm text-gray-600">
+          <p class="text-sm text-gray-600 ">
             {{ getRelativeTime(post.published_at) }}
           </p>
-          <div class="flex items-center space-x-12 ">
-            <FeaturedButton />
+          <div class="flex items-center space-x-3 sm:space-x-12">
+            <div v-if="post.status == 'draft'" class="text-xs uppercase">{{ post.status }}</div>
+
+            <FeaturedButton v-if="post.status !== 'draft'" />
 
             <NuxtLink :to="`/admin/edit/${post.slug}`" class="opacity-40 hover:opacity-100">
               <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -69,10 +73,28 @@ const { data: posts, pending, error } = await useAsyncData<any[]>(
   () => $fetch('/api/post')
 )
 
+const searchTerm = ref("");
+const searchItems = ref([]);
+
 watchEffect(() => {
   // @ts-ignore
-  firebaseItems.value = posts;
+  firebaseItems.value = posts.value;
+  
+  // @ts-ignore
+  searchItems.value = posts.value;
 })
+
+const searchPosts = () => {
+  const searchByTitle = fuzzy(posts.value, 'title')
+  const found = searchByTitle(searchTerm.value)
+  if (searchTerm.value.length > 0) {
+    searchItems.value = found;
+  } else {
+    // @ts-ignore
+    searchItems.value = posts.value;
+  }
+  // console.log(found)
+}
 
 // const refresh = () => refreshNuxtData('posts')
 </script>

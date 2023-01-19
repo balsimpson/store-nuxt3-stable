@@ -138,7 +138,7 @@ const requestInvite = async () => {
 
 onMounted(() => {
   const userCookie = useCookie("userCookie");
-  console.log(userCookie)
+  // console.log(userCookie)
   if (userCookie) {
     router.push("/admin");
   }
