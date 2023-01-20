@@ -1,11 +1,14 @@
 <template>
 	<div>
-		<PageHead :page="post" />
-		<AppImageCard :item="posts[0]" class="py-4"/>
+		<!-- <PageHead v-if="post" :page="post" /> -->
+		<button @click="isShowing = !isShowing">show</button>
+		<pre></pre>
+		<AppHero />
+		<AppImageCard :item="posts[0]" class="py-4" />
 		<!-- Grid -->
 		<div v-if="posts" class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
 			<!-- Card -->
-			<AppCardImg v-for="post in posts" :item="post" />
+			<!-- <AppCardImg v-for="post in posts" :item="post" /> -->
 			<!-- End Card -->
 		</div>
 		<!-- Card Blog -->
@@ -37,6 +40,9 @@
 
 			</div>
 		</div>
+
+		<!-- <SlideInCart @close="isShowing=!isShowing"  :isShowing="isShowing"/> -->
+		
 	</div>
 </template>
 
@@ -48,7 +54,7 @@ const { data: posts, pending, error } = await useAsyncData(
 	'posts',
 	() => $fetch('/api/post')
 )
-
+const isShowing = ref(false)
 const showToast = (msg) => {
 	toast(msg, {
 		timeout: 50000,

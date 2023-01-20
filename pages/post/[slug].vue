@@ -7,33 +7,8 @@
       <div class="text-4xl font-bold font-arvo">{{ post.title }}</div>
       <div class="flex py-6 text-xs font-bold text-gray-600">
         <div class="text-xs font-bold text-gray-600">
-          <time datetime="2023-01-06T11:00:00.000Z" itemprop="datePublished" class="text-xs font-bold text-gray-600">06
-            January 2023, 4:30pm</time>
+          <time datetime="2023-01-06T11:00:00.000Z" itemprop="datePublished" class="text-xs font-bold text-gray-600">{{ getRelativeTime(post.published_at) }}</time>
         </div>
-        <span class="flex items-center">
-          <ul class="flex items-center">
-            <li class="mr-2">
-              <button aria-label="facebook"
-                class="flex items-center text-gray-600 hover:text-blue-600 focus:outline-none focus:text-blue-600">
-                <svg id="facebook_share" class="" data-testid="social-icon-Facebook" xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
-                  <!-- svg content removed for brevity -->
-                </svg>
-                <span class="ml-2">Share</span>
-              </button>
-            </li>
-            <li>
-              <button aria-label="twitter"
-                class="flex items-center text-gray-600 hover:text-blue-600 focus:outline-none focus:text-blue-600">
-                <svg id="twitter_share" class="" data-testid="social-icon-Twitter" xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="14" viewBox="0 0 18 14">
-                  <!-- svg content removed for brevity -->
-                </svg>
-                <span class="ml-2">Tweet</span>
-              </button>
-            </li>
-          </ul>
-        </span>
       </div>
       <article v-html="postHtml" class="flex-grow w-full prose border-t font-lato">
       </article>
